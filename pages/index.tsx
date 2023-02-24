@@ -1,15 +1,32 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
-import styles from "@/styles/Home.module.css";
+import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import Layout from "@/components/Layout";
 import utilsStyle from "../styles/utils.module.css";
+import { getPostsData } from "@/lib/post";
 
+// interface Posts {
+//   id: string;
+//   title: string;
+//   date: string;
+//   thumbnail: string;
+// }
 
-const inter = Inter({ subsets: ["latin"] });
+export async function getStaticProps() {
+  const allPostsData = getPostsData(); //id,post,data,thumbnail
 
-export default function Home() {
+  console.log(allPostsData);
+
+  return {
+    props: {
+      allPostsData,
+    },
+  };
+}
+
+export default function Home({ allPostsData }) {
   return (
     <>
       <Layout>
@@ -20,46 +37,16 @@ export default function Home() {
         <div>
           <h2>エンジニアのブログ</h2>
           <div className={styles.grid}>
-            <article>
-              <Link href="/">
-                <img src="./images/thumbnail01.jpg" className={styles.thumbnailImage} />
-              </Link>
-              <Link href="/">
-                <div className={utilsStyle.boldText}>SSGとSSRの使い分けはいつなのか？</div>
-              </Link>
-              <br></br>
-              <small className={utilsStyle.lightText}>2023.02.24</small>
-            </article>
-            <article>
-              <Link href="/">
-                <img src="./images/thumbnail01.jpg" className={styles.thumbnailImage} />
-              </Link>
-              <Link href="/">
-                <div className={utilsStyle.boldText}>SSGとSSRの使い分けはいつなのか？</div>
-              </Link>
-              <br></br>
-              <small className={utilsStyle.lightText}>2023.02.24</small>
-            </article>
-            <article>
-              <Link href="/">
-                <img src="./images/thumbnail01.jpg" className={styles.thumbnailImage} />
-              </Link>
-              <Link href="/">
-                <div className={utilsStyle.boldText}>SSGとSSRの使い分けはいつなのか？</div>
-              </Link>
-              <br></br>
-              <small className={utilsStyle.lightText}>2023.02.24</small>
-            </article>
-            <article>
-              <Link href="/">
-                <img src="./images/thumbnail01.jpg" className={styles.thumbnailImage} />
-              </Link>
-              <Link href="/">
-                <div className={utilsStyle.boldText}>SSGとSSRの使い分けはいつなのか？</div>
-              </Link>
-              <br></br>
-              <small className={utilsStyle.lightText}>2023.02.24</small>
-            </article>
+            {allPostsData.map(({ id, title, date, thumbnail }) => (
+              <article key={id}>
+                <Link href={`/posts/${id}`}>
+                  <img src={thumbnail} className={styles.thumbnailImage} />
+                  <div className={utilsStyle.boldText}>{title}</div>
+                </Link>
+                <br></br>
+                <small className={utilsStyle.lightText}>{date}</small>
+              </article>
+            ))}
           </div>
         </div>
       </Layout>
