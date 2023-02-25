@@ -2,6 +2,8 @@ import Layout from "@/components/Layout";
 import type { GetStaticProps } from "next";
 import { getAllPostIDs, getPostData } from "@/lib/post";
 import { FC } from "react";
+import utilStyle from "../../styles/utils.module.css";
+import Head from "next/head";
 
 type PostData = {
   postData: {
@@ -29,11 +31,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 const Post: FC<PostData> = ({ postData }) => {
   return (
     <Layout>
-      {postData.title}
-      <br></br>
-      {postData.date}
-      <br></br>
-      {postData.contentHtml}
+      <Head>
+        <title>{postData.title}</title>
+      </Head>
+      <article>
+        <h1 className={utilStyle.headingX1}>{postData.title}</h1>
+        <div className={utilStyle.lightText}>{postData.date}</div>
+
+        <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+      </article>
     </Layout>
   );
 };

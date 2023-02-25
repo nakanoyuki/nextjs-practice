@@ -3,13 +3,13 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
-import Layout from "@/components/Layout";
+import Layout, { siteTitle } from "@/components/Layout";
 import utilsStyle from "../styles/utils.module.css";
 import { getPostsData } from "@/lib/post";
-import type { PostData } from '../lib/post';
+import type { PostData } from "../lib/post";
 
 type Props = {
-	allPostsData: PostData[];
+  allPostsData: PostData[];
 };
 export async function getStaticProps() {
   const allPostsData = getPostsData(); //id,post,data,thumbnail
@@ -23,10 +23,13 @@ export async function getStaticProps() {
   };
 }
 
-export default function Home({ allPostsData }:Props) {
+export default function Home({ allPostsData }: Props) {
   return (
     <>
-      <Layout>
+      <Head>
+        <title> {siteTitle}</title>
+      </Head>
+      <Layout home>
         <section className={`${utilsStyle.headingMd} ${utilsStyle.padding1px}`}>
           <p>Next.jsの演習</p>
         </section>
