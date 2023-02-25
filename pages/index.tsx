@@ -6,14 +6,11 @@ import Link from "next/link";
 import Layout from "@/components/Layout";
 import utilsStyle from "../styles/utils.module.css";
 import { getPostsData } from "@/lib/post";
+import type { PostData } from '../lib/post';
 
-// interface Posts {
-//   id: string;
-//   title: string;
-//   date: string;
-//   thumbnail: string;
-// }
-
+type Props = {
+	allPostsData: PostData[];
+};
 export async function getStaticProps() {
   const allPostsData = getPostsData(); //id,post,data,thumbnail
 
@@ -26,7 +23,7 @@ export async function getStaticProps() {
   };
 }
 
-export default function Home({ allPostsData }) {
+export default function Home({ allPostsData }:Props) {
   return (
     <>
       <Layout>
